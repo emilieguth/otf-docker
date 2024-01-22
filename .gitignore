@@ -1,0 +1,5 @@
+/log/
+/src/
+.DS_Store
+.idea/
+docker/php.sock
