@@ -2,4 +2,4 @@
 .DS_Store
 .idea/
 docker/php.sock
-docker/mysql/tmp/*
+#docker/mysql/tmp/*
