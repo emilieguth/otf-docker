@@ -7,6 +7,10 @@ services:
     volumes:
       - db:/var/lib/mysql
       - ./docker/mysql/otf.conf:/etc/mysql/conf.d/otf.conf
+      # If you want to access to a local folder, create mysql under the root folder and uncomment the following lines.
+      #- type: bind
+      #  source: ./mysql
+      #  target: /tmp/mysql/
     environment:
       - MYSQL_DATABASE=dev_ouvretaferme
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
@@ -49,13 +53,14 @@ services:
     container_name: web-otf
     image: nginx:latest
     ports:
-      - '8081:80'
+      - '80:80'
     volumes:
       - sock:/tmp
       - type: bind
         source: ./src
         target: /var/www/otf/
       - ./src/ouvretaferme/main/conf/rewrite/dev.cfg:/etc/nginx/conf.d/nginx.conf
+      - ./src/ouvretaferme/secret-example.c.php:/var/www/otf/ouvretaferme/secret.c.php
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php-fpm-otf
