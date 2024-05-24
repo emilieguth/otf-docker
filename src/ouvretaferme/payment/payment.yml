@@ -1,0 +1,13 @@
+StripeFarm:
+  id: serial32
+  farm: farm\Farm
+  apiSecretKey: text8(1, null)
+  apiSecretKeyTest: ?text8(1, null)
+  webhookSecretKey: text8(1, null)
+  webhookSecretKeyTest: ?text8(1, null)
+  createdBy: user\User = SPECIAL(user)
+  createdAt: datetime = SPECIAL(now)
+  UNIQUE: [
+    ["farm"]
+  ]
+
