@@ -8,7 +8,7 @@ services:
       - db:/var/lib/mysql
       - ./docker/mysql/otf.conf:/etc/mysql/conf.d/otf.conf
       - type: bind
-        source: ./docker/myql/tmp
+        source: ./docker/mysql/tmp
         target: /tmp/mysql/
     environment:
       - MYSQL_DATABASE=dev_ouvretaferme
