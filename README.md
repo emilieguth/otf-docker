@@ -1,26 +1,32 @@
 # otf-docker
-Encapsulation docker pour OTF
 
-## usage
+Ce repository sert à utiliser l'application ouvretaferme dans un environnement conteneurisé avec Docker.
+Vous trouverez les instructions d'installation de ouvretaferme ici : https://github.com/vingtcent123/ouvretaferme/blob/main/INSTALL.md
 
-Suivez le guide pour une installation directe avec tous les paramètres par défaut.
+## Usage
 
-Cette instance est adaptée pour un test rapide sur votre propre machine, mais **fortement déconseillée** en production pour des raisons de sécurité.
+Cette instance est adaptée pour un test en local sur votre propre machine, mais **fortement déconseillée** en production.
 
 1. Installez docker pour votre OS selon https://docs.docker.com/engine/install/
-1. clonez ce repository: ```git clone --filter=blob:none https://github.com/emilieguth/otf-docker.git```  (the _filter_ bit is optional, and prevents the downloading of obsolete files while still enabling later updates/fetches.)
-1. ```cd otf-docker```
-1. mettre à jour les sous-modules ( src = ouvretaferme): ```git submodule init && git submodule update --remote```
-1. ajouter l'adresse IP du serveur de développement dans vos alias DNS du client web pour le domaine "dev-ouvretaferme.org". S'il s'agit de votre machine locale sous unix, c'est généralement dans le fichier ```/etc/hosts``` : _127.0.0.1	localhost  dev-ouvretaferme.org_
-1. installez et configurez les dépendances de l'application: ```docker compose up```. Ceci va installer les services _mysql-otf, web-otf, php-fpm-otf_ et _redis-otf_.
-1. naviguez vers http://localhost pour tester votre app.
+2. Récupérez une base de données de démonstration au format SQL à cette adresse : https://media.ouvretaferme.org/demo.sql
+3. Puis exécutez les commandes suivantes (ces instructions sont aussi sur le repo [ouvretaferme](https://github.com/vingtcent123/ouvretaferme)):
 
+* `mkdir otf` (`otf` sera votre dossier root)
+* `cd otf`
+* `git clone git@github.com:emilieguth/otf-docker.git .`
+* `git submodule update --init`
+* `cp src/ouvretaferme/secret-example.c.php src/ouvretaferme/secret.c.php`
+* `docker-compose up --build`
+* Pour importer une base de données : copier le fichier SQL dans `otf/docker/mysql/tmp/demo.sql` puis connectez-vous en SSH à votre conteneur MySQL, puis à votre serveur SQL et créez la base de données `dev_ouvretaferme`. Ensuite, injectez en ligne de commande le fichier `demo.sql` dans cette nouvelle base. Exemple de commande : `mysql -u root -p -b dev_ouvretaferme < demo.sql`
 
-## suppression
+4. Modifiez vos `hosts` pour ajouter un lien entre 127.0.0.1 et dev-ouvertaferme.org
+5. Ouvrez votre navigateur à l'adresse http://dev-ouvretaferme.org pour tester votre app.
 
-Depuis le répertoire de votre app (```cd otf-docker```)
+À chaque fois que vous ferez une modification dans votre code, ne réécrasez pas votre fichier `secret.c.php`. Il vous suffira juste de lancer la commande `docker-compose up --build` pour rebuilder votre app et la lancer (ou sans `--build` si vous souhaitez juste relancer vos conteneurs).
+
+## Suppression
+
+Depuis le répertoire de votre app (```cd otf```)
  
 - Si vous souhaitez garder Docker mais supprimer l'app et ses dépendances: ```docker compose rm```
-- Si vous n'utilisez plus Docker pour d'autres usages: supprimer le répertoire de travail ```rm -rf otf-docker```, et désinstallez Docker selon votre OS en inversant les commandes de https://docs.docker.com/engine/install/
-
-
+- Si vous n'utilisez plus Docker pour d'autres usages: supprimer le répertoire de travail ```rm -rf otf```, et désinstallez Docker selon votre OS en inversant les commandes de https://docs.docker.com/engine/install/
