@@ -4,7 +4,6 @@ services:
   mysql-otf:
     container_name: mysql-otf
     image: mysql:8.0
-    command: rm -rf /var/lib/mysql/*  #bad quickfix for error "designated data directory /var/lib/mysql/ is unusable"
     volumes:
       - db:/var/lib/mysql
       - ./docker/mysql/otf.conf:/etc/mysql/conf.d/otf.conf
