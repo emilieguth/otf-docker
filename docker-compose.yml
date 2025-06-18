@@ -4,18 +4,18 @@ services:
     image: mysql:8.0
     volumes:
       - db:/var/lib/mysql
-      - ./docker/mysql/otf.conf:/etc/mysql/conf.d/otf.conf
       - type: bind
         source: ./docker/mysql/tmp
         target: /tmp/mysql/
     environment:
+      - TZ=Europe/Paris
       - MYSQL_DATABASE=dev_ouvretaferme
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password
       - ALLOW_EMPTY_PASSWORD=yes
     restart: always
     ports:
-      - '3308:3306'
+      - '3316:3306'
     networks:
       - app-tier
   redis-otf:
@@ -26,29 +26,55 @@ services:
     networks:
       - app-tier
     ports:
-      - '6381:6379'
+      - '6389:6379'
     volumes:
       - redisData:/data
+    environment:
+      - TZ=Europe/Paris
   php-fpm-otf:
     container_name: php-fpm-otf
     user: 'root:users'
     ports:
-      - '82:80'
+      - '90:80'
     volumes:
       - type: bind
         source: ./src
         target: /var/www/otf/
       - type: bind
-        source: ../mpf/src/mapetiteferme
-        target: /var/www/mpf/mapetiteferme
+        source: ./docker/php-fpm/mpf-storage
+        target: /var/www/mpf-storage/
+      - type: bind
+        source: ./docker/php-fpm/otf-storage
+        target: /var/www/storage/
       - sock:/tmp
       - ./docker/php-fpm/www.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
       - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
+      - type: bind
+        source: ./docker/php-fpm/tmp
+        target: /tmp/stripe
     networks:
       - app-tier
     build:
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
+    environment:
+      - TZ=Europe/Paris
+    # Nécessaire pour puppeteer (accès à la dev depuis docker)
+    extra_hosts:
+      - "www.mapetiteferme.fr:host-gateway"
+      - "www.dev-ouvretaferme.org:host-gateway"
+  phpmyadmin:
+    container_name: pma-otf
+    image: phpmyadmin
+    restart: always
+    depends_on:
+      - mysql-otf
+    ports:
+      - '100:80'
+    environment:
+      PMA_HOST: mysql-otf
+    networks:
+      - app-tier
   web-otf:
     container_name: web-otf
     image: nginx:latest
@@ -57,12 +83,16 @@ services:
     volumes:
       - sock:/tmp
       - type: bind
+        source: ./docker/php-fpm/mpf-storage
+        target: /var/www/mpf-storage/
+      - type: bind
         source: ./src
         target: /var/www/otf/
       - type: bind
-        source: ../mpf/src/mapetiteferme
-        target: /var/www/mpf/mapetiteferme
-      - ./src/ouvretaferme/main/conf/rewrite/dev.cfg:/etc/nginx/conf.d/nginx.conf
+        source: ./docker/php-fpm/otf-storage
+        target: /var/www/storage/
+      - ./src/mapetiteferme/main/conf/rewrite/dev.cfg:/etc/nginx/conf.d/nginx-mpf.conf
+      - ./src/ouvretaferme/main/conf/rewrite/dev.cfg:/etc/nginx/conf.d/nginx-otf.conf
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php-fpm-otf
@@ -71,8 +101,10 @@ services:
     networks:
       - app-tier
       - traefik_default
+    environment:
+      - TZ=Europe/Paris
     labels:
-      - 'traefik.http.routers.otf.rule=Host(`www.dev-ouvretaferme.org`)'
+      - 'traefik.http.routers.mpf.rule=HostRegexp(`^.+\.mapetiteferme\.fr`) || HostRegexp(`^.+\.dev-ouvretaferme.org`)'
       - 'traefik.port=80'
       - 'traefik.enable=true'
       - 'traefik.docker.network=traefik_default'

@@ -17,7 +17,13 @@ RUN apt-get update && apt-get install -y \
         vim \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
 	&& docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install exif
+    && docker-php-ext-install exif \
+    && docker-php-ext-install bcmath
+
+
+# Chromium headless
+RUN apt-get install -y chromium
+RUN ln -sf /usr/lib/chromium/chromium /usr/bin/google-chrome
 
 RUN ln -sf /bin/bash /bin/sh
 
@@ -60,6 +66,10 @@ RUN docker-php-ext-install xml
 
 RUN sed -i 's/listen = /;listen = /' /usr/local/etc/php-fpm.d/www.conf
 
+# Node for chromium
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    npm
 
 WORKDIR /
 
