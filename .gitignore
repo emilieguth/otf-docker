@@ -3,4 +3,6 @@
 .idea/
 docker/php.sock
 docker/mysql/tmp/*
-src/*
+src/
+docker/php-fpm/tmp/*
+docker/php-fpm/otf-storage
