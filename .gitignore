@@ -3,3 +3,4 @@
 .idea/
 docker/php.sock
 docker/mysql/tmp/*
+src/*
