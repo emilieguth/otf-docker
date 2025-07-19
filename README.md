@@ -15,7 +15,6 @@ Cette instance est adaptée pour un test en local sur votre propre machine, mais
 * `mkdir otf` (`otf` sera votre dossier root)
 * `cd otf`
 * `git clone git@github.com:emilieguth/otf-docker.git .`
-* `git submodule update --init`
 * `cp src/ouvretaferme/secret-example.c.php src/ouvretaferme/secret.c.php`
 * `docker-compose up --build`
 * Pour importer une base de données : copier le fichier SQL dans `otf/docker/mysql/tmp/demo.sql` puis connectez-vous en SSH à votre conteneur MySQL, puis à votre serveur SQL et créez la base de données `dev_ouvretaferme`. Ensuite, injectez en ligne de commande le fichier `demo.sql` dans cette nouvelle base. Exemple de commande : `mysql -u root -p -b dev_ouvretaferme < demo.sql`
