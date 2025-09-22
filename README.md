@@ -8,13 +8,18 @@ Vous trouverez les instructions d'installation de ouvretaferme ici : https://git
 Cette instance est adaptée pour un test en local sur votre propre machine, mais **fortement déconseillée** en production.
 
 1. Installez docker pour votre OS selon https://docs.docker.com/engine/install/
-2. Cloner le repo qui permet l'utilisation de [Traefik](https://doc.traefik.io/traefik/) dans un nouveau dossier (n'importe où) : `git clone git@github.com:emilieguth/traefik.git .` et suivre les instructions de ce nouveau repo. Ceci permettra d'avoir plusieurs conteneurs dockers qui écoutent sur le port 80.
+2. Installez [Traefik](https://doc.traefik.io/traefik/) qui permettra d'avoir plusieurs conteneurs dockers qui écoutent sur le port 80. L'utilisateur courant doit donc aussi être membre du groupe "docker" pour pouvoir se connecter au Daemon socket.
+   * `git clone git@github.com:emilieguth/traefik.git`
+   * `cd traefik`
+   * `sudo usermod -aG docker $USER`
+   * `docker-compose up --build`
 2. Récupérez une base de données de démonstration au format SQL à cette adresse : https://media.ouvretaferme.org/demo.sql
 3. Puis exécutez les commandes suivantes (ces instructions sont aussi sur le repo [ouvretaferme](https://github.com/vingtcent123/ouvretaferme)):
 
 * `mkdir otf` (`otf` sera votre dossier root)
 * `cd otf`
 * `git clone git@github.com:emilieguth/otf-docker.git .`
+* `git submodule update --init`
 * `cp src/ouvretaferme/secret-example.c.php src/ouvretaferme/secret.c.php`
 * `docker-compose up --build`
 * Pour importer une base de données : copier le fichier SQL dans `otf/docker/mysql/tmp/demo.sql` puis connectez-vous en SSH à votre conteneur MySQL, puis à votre serveur SQL et créez la base de données `dev_ouvretaferme`. Ensuite, injectez en ligne de commande le fichier `demo.sql` dans cette nouvelle base. Exemple de commande : `mysql -u root -p -b dev_ouvretaferme < demo.sql`
