@@ -7,6 +7,7 @@ services:
       - type: bind
         source: ./docker/mysql/tmp
         target: /tmp/mysql/
+      - ./docker/mysql/conf:/etc/mysql/conf.d
     environment:
       - TZ=Europe/Paris
       - MYSQL_DATABASE=dev_ouvretaferme
@@ -71,6 +72,8 @@ services:
       PMA_HOST: mysql-otf
     networks:
       - app-tier
+    extra_hosts:
+      - "pma.dev-ouvretaferme.org:host-gateway" # accès depuis pma.dev-ouvretaferme.org:100
   web-otf:
     container_name: web-otf
     image: nginx:latest
