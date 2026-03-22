@@ -10,7 +10,7 @@ Cette instance est adaptée pour un test en local sur votre propre machine, mais
 1. Installez docker pour votre OS selon https://docs.docker.com/engine/install/
 2. Cloner le repo qui permet l'utilisation de [Traefik](https://doc.traefik.io/traefik/) dans un nouveau dossier (n'importe où) : `git clone git@github.com:emilieguth/traefik.git .` et suivre les instructions de ce nouveau repo. Ceci permettra d'avoir plusieurs conteneurs dockers qui écoutent sur le port 80.
 2. Récupérez une base de données de démonstration au format SQL à cette adresse : https://media.ouvretaferme.org/demo.sql
-3. Puis exécutez les commandes suivantes (ces instructions sont aussi sur le repo [ouvretaferme](https://github.com/vingtcent123/ouvretaferme)):
+3. Puis exécutez les commandes suivantes (ces instructions sont aussi sur le repo [ouvretaferme](https://github.com/emilieguth/ouvretaferme)):
 
 * `mkdir otf` (`otf` sera votre dossier root)
 * `cd otf`
