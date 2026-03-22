@@ -1,7 +1,7 @@
 # otf-docker
 
 Ce repository sert à utiliser l'application ouvretaferme dans un environnement conteneurisé avec Docker.
-Vous trouverez les instructions d'installation de ouvretaferme ici : https://github.com/vingtcent123/ouvretaferme/blob/main/INSTALL.md
+Vous trouverez les instructions d'installation de ouvretaferme ici : https://github.com/emilieguth/ouvretaferme/blob/main/INSTALL.md
 
 ## Usage
 
