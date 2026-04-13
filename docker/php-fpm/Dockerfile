@@ -31,6 +31,9 @@ RUN pecl install -o -f redis \
 RUN pecl install yamL \
     && docker-php-ext-enable yaml
 
+RUN pecl install oauth \
+    && docker-php-ext-enable oauth
+
 RUN apt-get update -yqq \
     && apt-get install -y libmagickwand-dev imagemagick
 
@@ -53,7 +56,8 @@ RUN sed -i 's/listen = /;listen = /' /usr/local/etc/php-fpm.d/www.conf
 
 # Node for chromium
 RUN apt-get update && apt-get install -y \
-    npm
+    npm \
+    && npm update npm -g
 
 WORKDIR /
 
