@@ -19,8 +19,8 @@ Cette instance est adaptée pour un test en local sur votre propre machine, mais
 * `docker-compose up --build`
 * Pour importer une base de données : copier le fichier SQL dans `otf/docker/mysql/tmp/demo.sql` puis connectez-vous en SSH à votre conteneur MySQL, puis à votre serveur SQL et créez la base de données `dev_ouvretaferme`. Ensuite, injectez en ligne de commande le fichier `demo.sql` dans cette nouvelle base. Exemple de commande : `mysql -u root -p -b dev_ouvretaferme < demo.sql`
 
-4. Modifiez vos `hosts` pour ajouter un lien entre 127.0.0.1 et dev-ouvertaferme.org
-5. Ouvrez votre navigateur à l'adresse http://dev-ouvretaferme.org pour tester votre app.
+4. Modifiez vos `hosts` pour ajouter un lien entre 127.0.0.1 et dev-ouvretaferme.org, www.dev-ouvretaferme.org, doc.dev-ouvretaferme.org (si vous avez récupéré son code source)
+5. Ouvrez votre navigateur à l'adresse http://www.dev-ouvretaferme.org pour tester votre app.
 
 À chaque fois que vous ferez une modification dans votre code, ne réécrasez pas votre fichier `secret.c.php`. Il vous suffira juste de lancer la commande `docker-compose up --build` pour rebuilder votre app et la lancer (ou sans `--build` si vous souhaitez juste relancer vos conteneurs).
 
