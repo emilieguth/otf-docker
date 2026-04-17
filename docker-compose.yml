@@ -80,10 +80,16 @@ services:
     build:
       context: .
       dockerfile: docker/doc/Dockerfile
-    ports:
-      - '200:8000'
     volumes:
       - ./doc:/app
+    ports:
+      - "200:8000"
+    environment:
+      - MKDOCS_DEV_ADDR=0.0.0.0:8000
+      - WATCHDOG_DEBUG=1
+      - WATCHDOG_POLLING_INTERVAL=0.5
+    command: mkdocs serve -a 0.0.0.0:8000 --dirtyreload --dev-addr=0.0.0.0:8000
+
     networks:
       - app-tier
   web-otf:
