@@ -50,6 +50,8 @@ services:
       - sock:/tmp
       - ./docker/php-fpm/www.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
       - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
+      # Liste blanche des formats d'ImageMagick, la même qu'en production (migration/2026-10-21-securite-imagemagick-policy.md)
+      - ./src/ouvretaferme/main/conf/imagemagick/policy.xml:/etc/ImageMagick-6/policy.xml:ro
       - type: bind
         source: ./docker/php-fpm/tmp
         target: /tmp/shared
